@@ -52,6 +52,8 @@ public class HealthSystem : MonoBehaviour
 	{
         if (_CurrentHealth <= 0f)
 		{
+            HealthBar?.transform.parent.gameObject.SetActive(false);
+
             if (_Death != null)
                 _Death.Die();
 		}

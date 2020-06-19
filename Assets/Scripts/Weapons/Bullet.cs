@@ -2,10 +2,10 @@
 
 public class Bullet : MonoBehaviour
 {
-    public float Speed;
-    public float Damage;
+    public float Speed { get; set; }
+    public float Damage { get; set; }
 
-    private Rigidbody _Body;
+    protected Rigidbody _Body;
 
     void Start()
     {

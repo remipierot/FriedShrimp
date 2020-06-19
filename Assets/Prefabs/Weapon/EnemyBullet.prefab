@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5085919610667961264}
   - component: {fileID: 5085919610667961265}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,13 +93,13 @@ GameObject:
   - component: {fileID: 5085919611923710788}
   - component: {fileID: 5085919611923710779}
   - component: {fileID: 2015831101963529988}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: EnemyBullet
   m_TagString: EnemyBullet
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5085919611923710778
 Transform:
   m_ObjectHideFlags: 0
@@ -158,7 +158,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 037f311515947de44af0d1d95f07c152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 5
 --- !u!1 &5085919612197656055
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5085919612197656048}
   - component: {fileID: 5085919612197656049}
-  m_Layer: 8
+  m_Layer: 11
   m_Name: Bullet Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -16,10 +16,10 @@ TagManager:
   - UI
   - 
   - 
-  - Airborne
-  - Grounded
-  - 
-  - 
+  - Player
+  - PlayerFire
+  - Enemy
+  - EnemyFire
   - 
   - 
   - 

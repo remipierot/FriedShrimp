@@ -36,18 +36,15 @@ public class AutoShoot : MonoBehaviour
 		{
 			float angle = 0f;
 
-			if (Profile.Amount > 1)
+			for (int i = 0; i < Profile.Amount; i++)
 			{
-				for (int i = 0; i < Profile.Amount; i++)
-				{
-					angle = _TotalSpread * (i / (float)Profile.Amount);
-					angle -= (_TotalSpread / 2f) - Profile.Spread / Profile.Amount;
+				angle = _TotalSpread * (i / (float)Profile.Amount);
+				angle -= (_TotalSpread / 2f) - Profile.Spread / Profile.Amount;
 
-					_Shoot(angle);
+				_Shoot(angle);
 
-					if (Profile.FireRate > 0f)
-						yield return _Rate;
-				}
+				if (Profile.FireRate > 0f)
+					yield return _Rate;
 			}
 
 			yield return _Interval;
@@ -56,11 +53,18 @@ public class AutoShoot : MonoBehaviour
 
 	private void _Shoot(float angle)
 	{
-		if(PoolingManager.Instance != null)
-		{
-			var tmp = PoolingManager.Instance.UseObject(BulletPrefab, PopPoint.position, Quaternion.identity);
-			tmp.transform.Rotate(Vector3.up, angle);
-			tmp.GetComponent<Bullet>().Damage = Profile.Damage;
-		}
+		if (!PoolingManager.Instance)
+			return;
+
+		var tmp = PoolingManager.Instance.UseObject(BulletPrefab, PopPoint.position, Quaternion.identity);
+		tmp.transform.Rotate(Vector3.up, PopPoint.transform.rotation.eulerAngles.y + angle);
+		var bullet = tmp.GetComponent<Bullet>();
+
+		if (!bullet)
+			return;
+
+		bullet.Damage = Profile.Damage;
+		bullet.Speed = Profile.Speed;
+		PoolingManager.Instance.ReturnObject(tmp, Profile.DestroyRate);
 	}
 }

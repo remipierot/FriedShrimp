@@ -19,7 +19,7 @@ public class NodeMoveEditor : Editor
 			Source.Nodes.Add(Source.transform.position);
 		}
 
-		if (GUILayout.Button("Remove Node"))
+		if (GUILayout.Button("Remove Node") && Source.Nodes.Count > 0)
 		{
 			Source.Nodes.RemoveAt(Source.Nodes.Count - 1);
 		}
