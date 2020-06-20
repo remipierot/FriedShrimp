@@ -14,7 +14,11 @@ public class HealthSystem : MonoBehaviour
     void OnEnable()
     {
         if (IsEnemy)
+		{
+            LevelManager.Instance.RegisterEnemy();
+            gameObject.tag = "Enemy";
             _TagName = "Bullet";
+		}
         else
             _TagName = "EnemyBullet";
 
@@ -30,6 +34,11 @@ public class HealthSystem : MonoBehaviour
 	{
 		if (other.CompareTag(_TagName) && this.enabled)
 		{
+            if (!IsEnemy)
+			{
+                LevelManager.Instance.PlayerHit();
+			}
+
             var triggerPosition = other.ClosestPointOnBounds(transform.position);
             var direction = triggerPosition - transform.position;
 
@@ -62,6 +71,7 @@ public class HealthSystem : MonoBehaviour
             if(IsEnemy)
 			{
                 gameObject.tag = "Untagged";
+                LevelManager.Instance.AddEnemyKill();
 			}
 		}
 	}

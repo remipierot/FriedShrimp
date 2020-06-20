@@ -65,9 +65,16 @@ public class Missile : Bullet
                 .CompareTo(Vector3.Distance(transform.position, b.transform.position));
             });
 
-        if (enemies.Length > 0 && enemies[0].GetComponent<HealthSystem>().enabled)
-            return enemies[0].transform;
-        else
+        if (enemies.Length > 0)
+		{
+            var hs = enemies[0].GetComponent<HealthSystem>();
+
+            if(hs != null && hs.enabled)
+                return enemies[0].transform;
+
             return null;
+		}
+
+        return null;
 	}
 }

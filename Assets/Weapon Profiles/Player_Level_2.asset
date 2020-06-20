@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c2eae690e95ee40af0d42a0f8549c6, type: 3}
   m_Name: Player_Level_2
   m_EditorClassIdentifier: 
-  Speed: 25
-  Damage: 1
+  Speed: 20
+  Damage: 2
   FireRate: 0
-  Interval: 0.25
+  Interval: 0.2
   DestroyRate: 2
   Spread: 3
   Amount: 3

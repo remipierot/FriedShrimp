@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f0c2eae690e95ee40af0d42a0f8549c6, type: 3}
-  m_Name: Player_Level_1
-  m_EditorClassIdentifier: Assembly-CSharp::ShootProfiles
-  Speed: 10
-  Damage: 1
+  m_Name: Player_Missile_2
+  m_EditorClassIdentifier: 
+  Speed: 16
+  Damage: 10
   FireRate: 0
-  Interval: 0.3
-  DestroyRate: 2
+  Interval: 1.5
+  DestroyRate: 6
   Spread: 0
-  Amount: 1
+  Amount: 2
