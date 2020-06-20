@@ -33,6 +33,11 @@ public class AutoMove : MonoBehaviour
         StartCoroutine(StartMove(reverse, Duration));
 	}
 
+	private void OnDisable()
+	{
+        StopAllCoroutines();
+	}
+
 	IEnumerator StartMove(bool reverse, float duration)
 	{
         if(reverse)

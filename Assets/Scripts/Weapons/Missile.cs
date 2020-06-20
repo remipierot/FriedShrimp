@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Missile : Bullet
 {
     public float RotateSpeed = 3f;
     public float FollowDuration = 1f;
+    public bool FiredByPlayer = false;
 
-    private Transform _Player;
+    private Transform _Target;
     private WaitForSeconds _PhysicsTimeStep;
 
     void Awake()
@@ -18,11 +20,19 @@ public class Missile : Bullet
 
 	private void Start()
 	{
-        _Player = GameObject.FindGameObjectWithTag("Player")?.transform;
+        if(!FiredByPlayer)
+		{
+            _Target = GameObject.FindGameObjectWithTag("Player")?.transform;
+		}
     }
 
 	private void OnEnable()
 	{
+        if (FiredByPlayer)
+        {
+            _Target = FindEnemy();
+        }
+
         StartCoroutine(StartFollow(FollowDuration));
 	}
 
@@ -32,9 +42,9 @@ public class Missile : Bullet
 		{
             followDuration -= Time.fixedDeltaTime;
 
-            if(_Player != null)
+            if(_Target != null)
 			{
-                Vector3 dir = _Player.position - transform.position;
+                Vector3 dir = _Target.position - transform.position;
                 transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), RotateSpeed * Time.fixedDeltaTime);
 			}
 
@@ -42,5 +52,22 @@ public class Missile : Bullet
 
             yield return _PhysicsTimeStep;
         }
+	}
+
+    Transform FindEnemy()
+	{
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        if(enemies.Length > 1)
+            Array.Sort(enemies, delegate (GameObject a, GameObject b)
+            {
+                return Vector3.Distance(transform.position, a.transform.position)
+                .CompareTo(Vector3.Distance(transform.position, b.transform.position));
+            });
+
+        if (enemies.Length > 0 && enemies[0].GetComponent<HealthSystem>().enabled)
+            return enemies[0].transform;
+        else
+            return null;
 	}
 }

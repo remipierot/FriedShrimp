@@ -57,20 +57,21 @@ public class EnemyWaves : MonoBehaviour
 	{
         yield return _DisableAfter;
 
-        go?.SetActive(false);
+        if(go != null)
+            go.SetActive(false);
 	}
 
     IEnumerator CheckCombo()
 	{
-        yield return new WaitForSeconds(transform.childCount);
+        yield return _DisableAfter;
 
         if(transform.childCount == 0)
 		{
-
+            print("Combo");
 		}
         else
 		{
-
+            print("Loss");
 		}
 	}
 }

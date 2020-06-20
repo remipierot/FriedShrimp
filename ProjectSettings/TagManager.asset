@@ -7,6 +7,9 @@ TagManager:
   - Enemy
   - Bullet
   - EnemyBullet
+  - Activator
+  - Deactivator
+  - Coin
   layers:
   - Default
   - TransparentFX
@@ -20,7 +23,7 @@ TagManager:
   - PlayerFire
   - Enemy
   - EnemyFire
-  - 
+  - Grounded
   - 
   - 
   - 

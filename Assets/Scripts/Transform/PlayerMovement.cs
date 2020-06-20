@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour
         var toGoalPoint = _ScreenToWorld - transform.position;
         var rightAxis = toGoalPoint.x > 0f ? 1f : toGoalPoint.x < 0f ? -1f : 0f;
 
-        var movement = Vector3.Lerp(transform.position, _ScreenToWorld, Speed * Time.fixedDeltaTime);
+        var movement = Vector3.Lerp(_Body.position, _ScreenToWorld, Speed * Time.fixedDeltaTime);
         _Body.MovePosition(movement);
 
         _Rotation.z = -rightAxis * Mathf.Clamp01(toGoalPoint.magnitude) * BankingValue;

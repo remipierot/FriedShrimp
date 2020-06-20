@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class DeathSystem : MonoBehaviour
 {
 	public bool ShouldBeDestroyed = true;
+	public bool BackToPool = true;
 	public float DestroyDelay;
 	public CreateObject[] ObjectsToSpawn;
 	public UnityEvent OnDeathEvent;
@@ -31,7 +32,10 @@ public class DeathSystem : MonoBehaviour
 
 		if (ShouldBeDestroyed)
 		{
-			PoolingManager.Instance.ReturnObject(gameObject, DestroyDelay);
+			if (BackToPool)
+				PoolingManager.Instance.ReturnObject(gameObject, DestroyDelay);
+			else
+				Destroy(gameObject, DestroyDelay);
 		}
 	}
 }

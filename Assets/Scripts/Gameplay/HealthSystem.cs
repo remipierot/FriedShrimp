@@ -7,7 +7,7 @@ public class HealthSystem : MonoBehaviour
     public GameObject HitEffect;
     public GameObject HealthBar;
 
-    private string _TagName;
+    private string _TagName = "Bullet";
     private float _CurrentHealth;
     private DeathSystem _Death;
 
@@ -28,7 +28,7 @@ public class HealthSystem : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag(_TagName))
+		if (other.CompareTag(_TagName) && this.enabled)
 		{
             var triggerPosition = other.ClosestPointOnBounds(transform.position);
             var direction = triggerPosition - transform.position;
@@ -36,12 +36,12 @@ public class HealthSystem : MonoBehaviour
             GameObject fx = PoolingManager.Instance.UseObject(HitEffect, triggerPosition, Quaternion.LookRotation(direction));
             PoolingManager.Instance.ReturnObject(fx, 1f);
 
-            _TakeDamage(other.GetComponent<Bullet>().Damage);
+            TakeDamage(other.GetComponent<Bullet>().Damage);
             PoolingManager.Instance.ReturnObject(other.gameObject);
 		}
 	}
 
-    private void _TakeDamage(float damage)
+    public void TakeDamage(float damage)
 	{
         _CurrentHealth -= damage;
         _CheckHealth();
@@ -52,10 +52,17 @@ public class HealthSystem : MonoBehaviour
 	{
         if (_CurrentHealth <= 0f)
 		{
-            HealthBar?.transform.parent.gameObject.SetActive(false);
+            if(HealthBar != null)
+                HealthBar.transform.parent.gameObject.SetActive(false);
 
             if (_Death != null)
                 _Death.Die();
+
+            //Prevent listing by FindGameObjectsWithTag when looking for closest enemy
+            if(IsEnemy)
+			{
+                gameObject.tag = "Untagged";
+			}
 		}
 	}
 

@@ -88,18 +88,14 @@ public class NodeMove : MonoBehaviour
 		_Parent = transform.parent != null ? transform.parent : transform;
 
 		var curveNodes = new List<Vector3>();
+		curveNodes.Add(_Parent.InverseTransformPoint(transform.position));
 
-		for(int i = 0; i < Nodes.Count - 3; i+=3)
+		for (int i = 0; i < Nodes.Count - 3; i+=3)
 		{
 			var p0 = _Parent.InverseTransformPoint(Nodes[i]);
 			var p1 = _Parent.InverseTransformPoint(Nodes[i + 1]);
 			var p2 = _Parent.InverseTransformPoint(Nodes[i + 2]);
 			var p3 = _Parent.InverseTransformPoint(Nodes[i + 3]);
-
-			if(i == 0)
-			{
-				p0 = _Parent.InverseTransformPoint(transform.position);
-			}
 
 			for(int j = 0; j <= CURVE_SEGMENT; j++)
 			{
