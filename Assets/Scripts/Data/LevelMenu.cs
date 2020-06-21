@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class LevelMenu : MonoBehaviour
 {
     public string Scene;
+    public string RequiredLevel;
     public Button Play;
     public Text Kills;
     public Text Rescue;
@@ -18,10 +19,8 @@ public class LevelMenu : MonoBehaviour
 
     void Start()
     {
-        if(StatsManager.Instance.Achievements.ContainsKey(Scene))
-            _LevelMedals = StatsManager.Instance.Achievements[Scene];
-
         Play.onClick.AddListener(GoToLevel);
+        Play.GetComponentInChildren<Text>().text = (transform.GetSiblingIndex() + 1).ToString("00");
         UpdateMenu();
     }
 
@@ -40,6 +39,16 @@ public class LevelMenu : MonoBehaviour
             Rescue.color = _LevelMedals.Rescue ? Enabled : Disabled;
             Untouched.color = _LevelMedals.Untouched ? Enabled : Disabled;
         }
+
+        CheckIfUnlocked();
+	}
+
+    void CheckIfUnlocked()
+	{
+        bool unlocked = StatsManager.Instance.LevelCompleted.ContainsKey(RequiredLevel) &&
+                        StatsManager.Instance.LevelCompleted[RequiredLevel];
+
+        Play.interactable = unlocked || string.IsNullOrEmpty(RequiredLevel);
 	}
 
     void GoToLevel()

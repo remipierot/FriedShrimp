@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class PowerUpMenu : MonoBehaviour
 {
@@ -36,7 +37,7 @@ public class PowerUpMenu : MonoBehaviour
 #if UNITY_EDITOR
 		BulletTime(Input.GetMouseButton(1));
 #elif UNITY_ANDROID
-		BulletTime(Input.touchCount == 0);
+		BulletTime(Input.touchCount == 0 || EventSystem.current.IsPointerOverGameObject(0));
 #endif
 	}
 

@@ -9,6 +9,8 @@ public class HumanRescue : MonoBehaviour
 	public float RescueTime = 5f;
 	public Image TimerUI;
 	public UnityEvent OnRescued;
+	public int MinScore = 25;
+	public int MaxScore = 50;
 
 	private GameObject _Player;
 
@@ -34,7 +36,7 @@ public class HumanRescue : MonoBehaviour
 			yield return null;
 		}
 
-		LevelManager.Instance.AddRescue();
+		LevelManager.Instance.AddRescue(Random.Range(MinScore, MaxScore));
 		OnRescued.Invoke();
 		Destroy(gameObject, 1.5f);
 	}

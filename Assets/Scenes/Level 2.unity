@@ -8309,7 +8309,7 @@ MonoBehaviour:
   MoveOffset: {x: 0, y: 0, z: 180}
   OnStart: 1
   Reverse: 0
-  Duration: 30
+  Duration: 240
   OnStartMove:
     m_PersistentCalls:
       m_Calls: []

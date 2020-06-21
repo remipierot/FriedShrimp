@@ -46,6 +46,7 @@ public class Shield : MonoBehaviour
         }
         _Collider.enabled = false;
 
+        transform.localScale = Vector3.zero;
     }
 
 	private void OnTriggerEnter(Collider other)

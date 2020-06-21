@@ -14,20 +14,30 @@ public class AutoShoot : MonoBehaviour
 	// Start is called before the first frame update
 	void Start()
 	{
-		_Interval = new WaitForSeconds(Profile.Interval);
-		_Rate = new WaitForSeconds(Profile.FireRate);
-
 		if (PopPoint == null)
 			PopPoint = transform;
 
-		_TotalSpread = Profile.Spread * Profile.Amount;
+		Init();
 
 		StartCoroutine(ShootingSequence());
+	}
+
+	public void Init()
+	{
+		_Interval = new WaitForSeconds(Profile.Interval);
+		_Rate = new WaitForSeconds(Profile.FireRate);
+		_TotalSpread = Profile.Spread * Profile.Amount;
 	}
 
 	private void OnDisable()
 	{
 		StopAllCoroutines();
+	}
+
+	public void SwitchProfile(ShootProfile newProfile)
+	{
+		Profile = newProfile;
+		Init();
 	}
 
 	IEnumerator ShootingSequence()

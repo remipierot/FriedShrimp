@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
@@ -12,6 +13,7 @@ public class LevelManager : MonoBehaviour
     public int EnemyKilled;
     public int TotalRescue;
     public int HumansRescued;
+    public int Score;
 
     public UnityEvent OnEndGame;
 
@@ -36,36 +38,45 @@ public class LevelManager : MonoBehaviour
         TotalRescue++;
 	}
 
-    public void AddEnemyKill()
+    public void AddEnemyKill(int score)
 	{
         EnemyKilled++;
-	}
+        Score += score;
+        UpdateMoney.Instance.DisplayScore(Score);
+    }
 
-    public void AddRescue()
+    public void AddRescue(int score)
 	{
         HumansRescued++;
-	}
+        Score += score;
+        UpdateMoney.Instance.DisplayScore(Score);
+    }
 
     public void PlayerHit()
 	{
         Medals.Untouched = false;
 	}
 
-    public void EndGame()
+    public void EndGame(bool playerAlive)
 	{
-        StartCoroutine(CountDelay());
+        StartCoroutine(CountDelay(playerAlive));
 	}
 
-    IEnumerator CountDelay()
+    IEnumerator CountDelay(bool playerAlive)
     {
         yield return new WaitForSeconds(.25f);
 
-        if (EnemyKilled == TotalEnemy)
-            Medals.Kill = true;
-        if (HumansRescued == TotalRescue)
-            Medals.Rescue = true;
+        if (playerAlive)
+		{
+            if (EnemyKilled == TotalEnemy)
+                Medals.Kill = true;
+            if (HumansRescued == TotalRescue)
+                Medals.Rescue = true;
 
-        StatsManager.Instance.AddMedals(_Level, Medals);
+            StatsManager.Instance.AddMedals(_Level, Medals);
+            StatsManager.Instance.AddLevelCompleted(_Level);
+            StatsManager.Instance.SaveProgress();
+        }
 
         OnEndGame.Invoke();
     }

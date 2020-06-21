@@ -19,12 +19,18 @@ public class StatsManager : MonoBehaviour
     public List<LaserData> LaserUpgrades = new List<LaserData>();
 
     public Dictionary<string, Medals> Achievements = new Dictionary<string, Medals>();
+    public Dictionary<string, bool> LevelCompleted = new Dictionary<string, bool>();
     public Dictionary<string, DateTime> StatsTimer = new Dictionary<string, DateTime>();
 
     [Header("Upgrade Timers")]
     public List<StatsUpgradeInfo> Stats = new List<StatsUpgradeInfo>();
 
-    private void Awake()
+	private void Start()
+	{
+        LoadProgress();
+	}
+
+	private void Awake()
 	{
         if (Instance == null)
         {
@@ -89,6 +95,7 @@ public class StatsManager : MonoBehaviour
         toSave.Lives = Lives;
         toSave.Money = Money;
         toSave.Achievements = Achievements;
+        toSave.LevelCompleted = LevelCompleted;
         toSave.Stats = Stats;
         toSave.StatsTimer = StatsTimer;
 
@@ -98,11 +105,16 @@ public class StatsManager : MonoBehaviour
     public void LoadProgress()
 	{
         SaveData toLoad = SaveSystem.Load<SaveData>();
-        Lives = toLoad.Lives;
-        Money = toLoad.Money;
-        Achievements = toLoad.Achievements;
-        Stats = toLoad.Stats;
-        StatsTimer = toLoad.StatsTimer;
+
+        if (SaveSystem.LastResult == SaveSystem.Result.FileFound)
+        {
+            Lives = toLoad.Lives;
+            Money = toLoad.Money;
+            Achievements = toLoad.Achievements ?? Achievements;
+            LevelCompleted = toLoad.LevelCompleted ?? LevelCompleted;
+            Stats = toLoad.Stats ?? Stats;
+            StatsTimer = toLoad.StatsTimer ?? StatsTimer;
+        }
 
         UpdateItemDisplay();
 	}
@@ -126,10 +138,22 @@ public class StatsManager : MonoBehaviour
     public void AddMedals(string level, Medals medals)
 	{
         if (Achievements.ContainsKey(level))
-            Achievements[level] = medals;
+		{
+            Achievements[level].Kill |= medals.Kill;
+            Achievements[level].Rescue |= medals.Rescue;
+            Achievements[level].Untouched |= medals.Untouched;
+        }
         else
             Achievements.Add(level, medals);
 	}
+
+    public void AddLevelCompleted(string level)
+    {
+        if (Achievements.ContainsKey(level))
+            LevelCompleted[level] = true;
+        else
+            LevelCompleted.Add(level, true);
+    }
 }
 
 [System.Serializable]
@@ -165,6 +189,7 @@ public class SaveData
     public int Lives;
     public int Money;
     public Dictionary<string, Medals> Achievements = new Dictionary<string, Medals>();
+    public Dictionary<string, bool> LevelCompleted = new Dictionary<string, bool>();
     public Dictionary<string, DateTime> StatsTimer = new Dictionary<string, DateTime>();
     public List<StatsUpgradeInfo> Stats = new List<StatsUpgradeInfo>();
 }

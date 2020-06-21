@@ -2,10 +2,12 @@
 
 public class HealthSystem : MonoBehaviour
 {
-    public float MaxHealth = 10f;
+    private float _MaxHealth = 10f;
     public bool IsEnemy = true;
     public GameObject HitEffect;
     public GameObject HealthBar;
+    public int MinScore = 25;
+    public int MaxScore = 50;
 
     private string _TagName = "Bullet";
     private float _CurrentHealth;
@@ -20,9 +22,12 @@ public class HealthSystem : MonoBehaviour
             _TagName = "Bullet";
 		}
         else
+		{
             _TagName = "EnemyBullet";
+            _MaxHealth = StatsManager.Instance.GetStatsValue("Health", StatsManager.Instance.HealthUpgrades);
+		}
 
-        _CurrentHealth = MaxHealth;
+        _CurrentHealth = _MaxHealth;
     }
 
 	private void Start()
@@ -71,7 +76,7 @@ public class HealthSystem : MonoBehaviour
             if(IsEnemy)
 			{
                 gameObject.tag = "Untagged";
-                LevelManager.Instance.AddEnemyKill();
+                LevelManager.Instance.AddEnemyKill(Random.Range(MinScore, MaxScore));
 			}
 		}
 	}
@@ -81,7 +86,7 @@ public class HealthSystem : MonoBehaviour
         if(HealthBar != null)
 		{
             Vector3 scale = Vector3.one;
-            float value = _CurrentHealth / MaxHealth;
+            float value = _CurrentHealth / _MaxHealth;
             scale.x = value;
             HealthBar.transform.localScale = scale;
 		}

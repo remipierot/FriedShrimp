@@ -8,6 +8,7 @@ public class UpdateMoney : MonoBehaviour
     public static UpdateMoney Instance;
 
 	public Text Money;
+	public Text Score;
 
 	private void Awake()
 	{
@@ -21,6 +22,13 @@ public class UpdateMoney : MonoBehaviour
 
 	public void DisplayMoney(int value)
 	{
-		Money.text = "$ " + value.ToString();
+		if (Money)
+			Money.text = "$ " + value.ToString();
+	}
+
+	public void DisplayScore(int value)
+	{
+		if (Score)
+			Score.text = value.ToString("00000000");
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using UnityEngine.PlayerLoop;
 
 public class UpgradeItem : MonoBehaviour
 {
@@ -26,11 +27,16 @@ public class UpgradeItem : MonoBehaviour
 
         ItemNameText.text = ItemName;
 
-        BuyText.text = PricesLevel[_Stat.Level].ToString();
+        if (_Stat.Level == PricesLevel.Length)
+            BuyText.text = "MAX";
+        else
+            BuyText.text = PricesLevel[_Stat.Level].ToString();
 
         ItemLevelBar.value = _Stat.Level;
 
         BuyButton.onClick.AddListener(BuyUpgrade);
+
+        UpdateItemDisplay();
     } 
 
     public void BuyUpgrade()

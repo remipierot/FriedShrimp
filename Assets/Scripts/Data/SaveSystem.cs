@@ -6,6 +6,15 @@ using System.IO;
 
 public static class SaveSystem
 {
+	public enum Result
+	{
+		None,
+		FileNotFound,
+		FileFound
+	}
+
+	public static Result LastResult = Result.None;
+
 	public static void Save<T>(T saveData)
 	{
 		BinaryFormatter bf = new BinaryFormatter();
@@ -23,11 +32,12 @@ public static class SaveSystem
 
 			T loaded = (T)bf.Deserialize(file);
 			file.Close();
+			LastResult = Result.FileFound;
 			return loaded;
 		}
 		else
 		{
-
+			LastResult = Result.FileNotFound;
 		}
 
 		return default(T);

@@ -9,6 +9,5 @@ public class ShootProfile : ScriptableObject
 	public float Interval;
 	public float DestroyRate;
 	public float Spread;
-
 	public int Amount;
 }
