@@ -33,7 +33,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void _Move()
 	{
+#if UNITY_EDITOR
         _TouchPosition = Input.mousePosition;
+#elif UNITY_ANDROID
+        _TouchPosition = Input.touchCount > 0 ? Input.GetTouch(0).position : (Vector2)_TouchPosition;
+#endif
         _TouchPosition.z = _DistanceToCam;
         _ScreenToWorld = _Cam.ScreenToWorldPoint(_TouchPosition);
         var toGoalPoint = _ScreenToWorld - transform.position;

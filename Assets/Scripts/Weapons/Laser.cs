@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Laser : MonoBehaviour
 {
-    public float LaserDuration = 3f;
     public float AnimSpeed = 2f;
     public ParticleSystem Burst;
 
@@ -16,17 +15,19 @@ public class Laser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        _LaserCoroutineDuration = new WaitForSeconds(LaserDuration);
+        _LaserCoroutineDuration = new WaitForSeconds(
+            StatsManager.Instance.GetStatsValue("Laser", StatsManager.Instance.LaserUpgrades).LaserDuration
+         );
+
         _Collider = GetComponent<Collider>();
         _Collider.enabled = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.L) && !_LaserFired)
+    public void ShootLaser()
+	{
+        if(!_LaserFired)
             StartCoroutine(FireLaser());
-    }
+	}
 
     IEnumerator FireLaser()
 	{

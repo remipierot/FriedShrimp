@@ -4,29 +4,24 @@ using UnityEngine;
 
 public class MegaBomb : MonoBehaviour
 {
-    public float Radius = 2f;
-    public float Damage = 5f;
+    private float _Radius = 2f;
+    private float _Damage = 5f;
     public ParticleSystem FX;
 
     void Start()
     {
-        var fxMainParam = FX.main;
-        fxMainParam.startSize = Radius * fxMainParam.startSize.constant;
-    }
+        _Radius = StatsManager.Instance.GetStatsValue("MegaBomb", StatsManager.Instance.MegaBombUpgrades).Radius;
+        _Damage = StatsManager.Instance.GetStatsValue("MegaBomb", StatsManager.Instance.MegaBombUpgrades).Damage;
 
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.B))
-		{
-            DropBomb();
-		}
+        var fxMainParam = FX.main;
+        fxMainParam.startSize = _Radius * fxMainParam.startSize.constant;
     }
 
     public void DropBomb()
 	{
         FX.Play();
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, Radius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, _Radius);
 
 		foreach (var c in colliders)
 		{
@@ -34,7 +29,7 @@ public class MegaBomb : MonoBehaviour
 
             if(hs != null && c.CompareTag("Enemy"))
 			{
-                hs.TakeDamage(Damage);
+                hs.TakeDamage(_Damage);
 			}
 		}
 	}

@@ -40,6 +40,8 @@ public class StatsManager : MonoBehaviour
     public void AddMoney(int value)
 	{
         Money += value;
+
+        UpdateMoney.Instance.DisplayMoney(Money);
 	}
 
     public T GetStatsValue<T>(string statName, List<T> statsList)
@@ -48,7 +50,7 @@ public class StatsManager : MonoBehaviour
 		{
             if(s.Name == statName)
             { 
-                return statsList[s.Level - 1];
+                return statsList[s.Level];
             }
 		}
 
@@ -80,6 +82,54 @@ public class StatsManager : MonoBehaviour
 
         return null;
     }
+
+    public void SaveProgress()
+	{
+        SaveData toSave = new SaveData();
+        toSave.Lives = Lives;
+        toSave.Money = Money;
+        toSave.Achievements = Achievements;
+        toSave.Stats = Stats;
+        toSave.StatsTimer = StatsTimer;
+
+        SaveSystem.Save(toSave);
+	}
+
+    public void LoadProgress()
+	{
+        SaveData toLoad = SaveSystem.Load<SaveData>();
+        Lives = toLoad.Lives;
+        Money = toLoad.Money;
+        Achievements = toLoad.Achievements;
+        Stats = toLoad.Stats;
+        StatsTimer = toLoad.StatsTimer;
+
+        UpdateItemDisplay();
+	}
+
+    public void UpdateItemDisplay()
+	{
+        UpgradeItem[] items = FindObjectsOfType<UpgradeItem>();
+        LevelMenu[] levelMenus = FindObjectsOfType<LevelMenu>();
+
+		foreach (var i in items)
+		{
+            i.UpdateItemDisplay();
+		}
+
+		foreach (var l in levelMenus)
+		{
+            l.UpdateMenu();
+		}
+	}
+
+    public void AddMedals(string level, Medals medals)
+	{
+        if (Achievements.ContainsKey(level))
+            Achievements[level] = medals;
+        else
+            Achievements.Add(level, medals);
+	}
 }
 
 [System.Serializable]
@@ -107,4 +157,14 @@ public class ShieldData
 public class LaserData
 {
     public float LaserDuration;
+}
+
+[System.Serializable]
+public class SaveData
+{
+    public int Lives;
+    public int Money;
+    public Dictionary<string, Medals> Achievements = new Dictionary<string, Medals>();
+    public Dictionary<string, DateTime> StatsTimer = new Dictionary<string, DateTime>();
+    public List<StatsUpgradeInfo> Stats = new List<StatsUpgradeInfo>();
 }

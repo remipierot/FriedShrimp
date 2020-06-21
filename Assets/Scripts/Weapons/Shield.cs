@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
-    public float ShieldDuration;
     public GameObject HitEffect;
 
     private WaitForSeconds _ShieldDuration;
@@ -13,16 +12,10 @@ public class Shield : MonoBehaviour
     void Start()
     {
         transform.localScale = Vector3.zero;
-        _ShieldDuration = new WaitForSeconds(ShieldDuration);
+        _ShieldDuration = new WaitForSeconds(
+            StatsManager.Instance.GetStatsValue("Shield", StatsManager.Instance.ShieldUpgrades).ShieldDuration
+         );
         _Collider = GetComponent<Collider>();
-    }
-
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.S) && !_Collider.enabled)
-        {
-            ShieldUp();
-		}
     }
 
     public void ShieldUp()
